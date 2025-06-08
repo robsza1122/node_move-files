@@ -29,13 +29,16 @@ function moveAndRenameFile() {
     throw new Error('Source path is not a file');
   }
 
-  const newPathIsDirectory = newSourcePath.endsWith('/');
+  // I hope it will be clear now.
+
+  const directoryWithSlash =
+    newSourcePath.endsWith('/') && fs.statSync(newSourcePath);
 
   let targetDirectory;
 
-  if (newPathIsDirectory) {
-    if (!fs.existsSync(sourcePath)) {
-      throw new Error(`This source path does not exist`);
+  if (directoryWithSlash) {
+    if (!fs.existsSync(newSourcePath)) {
+      throw new Error(`Destination path does not exist`);
     }
 
     const fileName = path.basename(sourcePath);
