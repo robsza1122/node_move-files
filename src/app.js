@@ -26,17 +26,21 @@ function moveAndRenameFile() {
   }
 
   if (!fileStats.isFile()) {
-    throw new Error('Destination path is not a file');
+    throw new Error('Source path is not a file');
   }
 
-  const isDirectory = newSourcePath.endsWith('/');
+  const newPathIsDirectory = newSourcePath.endsWith('/');
 
   let targetDirectory;
 
-  if (isDirectory) {
+  if (newPathIsDirectory) {
     if (!fs.existsSync(sourcePath)) {
-      throw new Error(`This directory does not exist`);
+      throw new Error(`This source path does not exist`);
     }
+
+    const fileName = path.basename(sourcePath);
+
+    targetDirectory = path.join(newSourcePath, fileName);
   } else {
     if (
       fs.existsSync(newSourcePath) &&
